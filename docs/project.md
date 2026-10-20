@@ -46,10 +46,12 @@ from registry publication. New destinations/ACL and production deploy need expli
 
 ## Code and public presentation
 
-The selected [frontend policy](https://github.com/serrja/baseRules/blob/58408e8f311574fb17afafc04c0d3253eb54a022/docs/frontend.md)
+The selected [frontend policy](https://github.com/serrja/baseRules/blob/3eb6bae9ab70159e2c2635ec007f0624320eed1c/docs/frontend.md)
 owns TypeScript/Vue import grouping and spacing, and native Dart style. Frontend repositories
 enforce it with their locked tools. Public docs use GFM/relative links, not vault syntax.
 Portfolio screenshots come from a real demo; generated banners are presentation assets only.
 Do not invent business endpoints, deployments, benchmarks, employers or personal facts. Keep
-resume/hh.ru unchanged unless separately requested. Knowledge templates contain placeholders.
+resume/hh.ru unchanged unless separately requested. The selected
+[knowledge policy](https://github.com/serrja/baseRules/blob/3eb6bae9ab70159e2c2635ec007f0624320eed1c/docs/knowledge.md)
+owns template categories, installation and provenance.
 Coverage under 100% is advisory; tests/types/builds/access/config/report errors remain failures.
