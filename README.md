@@ -9,3 +9,9 @@ arbitrary latest policy at application/CI startup. Repository overrides state th
 
 License: [MIT](LICENSE) for these original normative documents. This does not change the license
 or visibility of any consuming repository or user content.
+
+## Development
+
+Run `make help`, `make version` and `make ci-local` with Docker/Buildx and Make.
+See [development](docs/development.md), [versioning](docs/versioning.md),
+[releases](docs/releases.md) and [changelog](CHANGELOG.md).
