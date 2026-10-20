@@ -46,8 +46,9 @@ from registry publication. New destinations/ACL and production deploy need expli
 
 ## Code and public presentation
 
-TypeScript/Vue use strict types, semicolons, double ordinary quotes and template literals for
-interpolation. Dart follows Effective Dart. Public docs use GFM/relative links, not vault syntax.
+The selected [frontend policy](https://github.com/serrja/baseRules/blob/58408e8f311574fb17afafc04c0d3253eb54a022/docs/frontend.md)
+owns TypeScript/Vue import grouping and spacing, and native Dart style. Frontend repositories
+enforce it with their locked tools. Public docs use GFM/relative links, not vault syntax.
 Portfolio screenshots come from a real demo; generated banners are presentation assets only.
 Do not invent business endpoints, deployments, benchmarks, employers or personal facts. Keep
 resume/hh.ru unchanged unless separately requested. Knowledge templates contain placeholders.
