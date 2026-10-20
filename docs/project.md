@@ -46,12 +46,26 @@ from registry publication. New destinations/ACL and production deploy need expli
 
 ## Code and public presentation
 
-The selected [frontend policy](https://github.com/serrja/baseRules/blob/3eb6bae9ab70159e2c2635ec007f0624320eed1c/docs/frontend.md)
+The selected [frontend policy](https://github.com/serrja/baseRules/blob/5d01b515b5bac8457606fe37da738ee1e96368ba/docs/frontend.md)
 owns TypeScript/Vue import grouping and spacing, and native Dart style. Frontend repositories
 enforce it with their locked tools. Public docs use GFM/relative links, not vault syntax.
 Portfolio screenshots come from a real demo; generated banners are presentation assets only.
 Do not invent business endpoints, deployments, benchmarks, employers or personal facts. Keep
 resume/hh.ru unchanged unless separately requested. The selected
-[knowledge policy](https://github.com/serrja/baseRules/blob/3eb6bae9ab70159e2c2635ec007f0624320eed1c/docs/knowledge.md)
+[knowledge policy](https://github.com/serrja/baseRules/blob/5d01b515b5bac8457606fe37da738ee1e96368ba/docs/knowledge.md)
 owns template categories, installation and provenance.
 Coverage under 100% is advisory; tests/types/builds/access/config/report errors remain failures.
+
+## Delivery and version ownership
+
+Follow the selected [version policy](https://github.com/serrja/baseRules/blob/5d01b515b5bac8457606fe37da738ee1e96368ba/docs/versioning.md)
+and [release workflow](https://github.com/serrja/baseRules/blob/5d01b515b5bac8457606fe37da738ee1e96368ba/docs/releases.md).
+Each package, service, chart and platform composition owns its version; HTTP schemas, generator
+manifests, bridge contracts and database revisions change only with their own compatibility needs.
+The platform composition pins concrete component versions, chart references and image digests.
+A document-template collection is a versioned bundle, not one runtime version per document.
+
+Use the repository's native Make/Docker checks through `make ci-local`; Actions invokes those
+same tasks. Source identity, fresh tests, coverage, built artifact checksums and exit codes belong
+in the ignored report directory. Missing mandatory inputs are blocked; billing-blocked hosted
+checks retain their PR and branch. No registry, release or deployment is implied by a Git tag.

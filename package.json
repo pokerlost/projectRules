@@ -6,14 +6,21 @@
     "node": "24.x"
   },
   "scripts": {
-    "check": "npm run check:markdown && npm run check:links && npm run check:rules",
-    "check:markdown": "markdownlint \"**/*.md\" --dot --ignore node_modules",
-    "check:links": "find . -path ./node_modules -prune -o -name '*.md' -type f -print0 | xargs -0 -r -n1 markdown-link-check --config .markdown-link-check.json --quiet",
-    "check:rules": "node scripts/check-rules.mjs"
+    "check": "npm run check:markdown && npm run check:links && npm test",
+    "check:markdown": "markdownlint \"**/*.md\" --dot --ignore node_modules --ignore coverage",
+    "check:links": "find . \\( -path ./node_modules -o -path ./coverage -o -path ./.git \\) -prune -o -name \"*.md\" -type f -print0 | xargs -0 -r -n1 markdown-link-check --config .markdown-link-check.json --quiet",
+    "check:rules": "node scripts/check-rules.mjs",
+    "test": "node --test --experimental-test-coverage --test-reporter=spec --test-reporter-destination=stdout --test-reporter=junit --test-reporter-destination=coverage/junit.xml --test-reporter=lcov --test-reporter-destination=coverage/lcov.info scripts/check-rules.mjs",
+    "version:show": "node node_modules/base-rules-docs/scripts/release.mjs version",
+    "release:check": "node node_modules/base-rules-docs/scripts/release.mjs release-check",
+    "build": "mkdir -p coverage/artifacts && npm pack --ignore-scripts --offline --pack-destination coverage/artifacts --json > coverage/pack.json && node node_modules/base-rules-docs/scripts/release.mjs capture",
+    "verify": "node node_modules/base-rules-docs/scripts/release.mjs verify",
+    "coverage": "node node_modules/base-rules-docs/scripts/release.mjs coverage"
   },
   "devDependencies": {
     "markdown-link-check": "3.15.0",
-    "markdownlint-cli": "0.49.1"
+    "markdownlint-cli": "0.49.1",
+    "base-rules-docs": "git+https://github.com/serrja/baseRules.git#5d01b515b5bac8457606fe37da738ee1e96368ba"
   },
   "overrides": {
     "get-uri": {
@@ -26,5 +33,18 @@
     "micromark-extension-math": {
       "katex": "0.18.2"
     }
-  }
+  },
+  "version": "0.1.0",
+  "files": [
+    "AGENTS.md",
+    "CONTRIBUTING.md",
+    "CHANGELOG.md",
+    "docs/",
+    "rules.lock.json",
+    "scripts/",
+    "Makefile",
+    "Dockerfile.quality",
+    "docker/",
+    ".github/engineering-source.json"
+  ]
 }
