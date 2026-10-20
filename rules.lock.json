@@ -2,7 +2,7 @@
   "schemaVersion": 1,
   "baseRules": {
     "repository": "https://github.com/serrja/baseRules",
-    "commit": "730418d3cc480b4f05b88b4c8275296c4845a75a",
+    "commit": "58408e8f311574fb17afafc04c0d3253eb54a022",
     "entrypoint": "AGENTS.md"
   }
 }
