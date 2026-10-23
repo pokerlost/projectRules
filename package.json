@@ -6,7 +6,7 @@
     "node": "24.x"
   },
   "scripts": {
-    "check": "npm run check:markdown && npm run check:links && npm test",
+    "check": "npm run check:markdown && npm run check:links",
     "check:markdown": "markdownlint \"**/*.md\" --dot --ignore node_modules --ignore coverage",
     "check:links": "find . \\( -path ./node_modules -o -path ./coverage -o -path ./.git \\) -prune -o -name \"*.md\" -type f -print0 | xargs -0 -r -n1 markdown-link-check --config .markdown-link-check.json --quiet",
     "check:rules": "node scripts/check-rules.mjs",
@@ -15,12 +15,13 @@
     "release:check": "node node_modules/base-rules-docs/scripts/release.mjs release-check",
     "build": "mkdir -p coverage/artifacts && npm pack --ignore-scripts --offline --pack-destination coverage/artifacts --json > coverage/pack.json && node node_modules/base-rules-docs/scripts/release.mjs capture",
     "verify": "node node_modules/base-rules-docs/scripts/release.mjs verify",
-    "coverage": "node node_modules/base-rules-docs/scripts/release.mjs coverage"
+    "coverage": "node node_modules/base-rules-docs/scripts/release.mjs coverage",
+    "acceptance": "npm run check && npm test"
   },
   "devDependencies": {
     "markdown-link-check": "3.15.0",
     "markdownlint-cli": "0.49.1",
-    "base-rules-docs": "git+https://github.com/serrja/baseRules.git#5d01b515b5bac8457606fe37da738ee1e96368ba"
+    "base-rules-docs": "git+https://github.com/serrja/baseRules.git#bafcb63ed94b9769a0ca098e5db4b33c55dbc1b9"
   },
   "overrides": {
     "get-uri": {
@@ -34,7 +35,7 @@
       "katex": "0.18.2"
     }
   },
-  "version": "0.1.0",
+  "version": "0.2.0-dev.0",
   "files": [
     "AGENTS.md",
     "CONTRIBUTING.md",
