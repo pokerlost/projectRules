@@ -1,5 +1,12 @@
 # Changelog
 
+## Unreleased
+
+- Add nine stable Pokerlost rules with applicability, examples, verification, ownership and exceptions.
+- Add reviewed pin adoption, synthetic contract examples and negative validation tests.
+- Pin refactor-policy-v3 generic source with per-file identity; retain historical consumers.
+- Use native checks for documentation; preserve source/archive verification and dependency audits.
+
 ## 0.1.0
 
 - Introduce an independently versioned Pokerlost policy bundle and native npm archive checks.
