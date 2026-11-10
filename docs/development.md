@@ -1,31 +1,34 @@
-# Development
+# 🧪 Development
 
-This repository contains safe Pokerlost policy. It has no application runtime or database.
-Prerequisites are Git, Make, Docker with Buildx and a POSIX shell.
+This policy repository has no application runtime or database. Prerequisites are Git, Node 24,
+npm from that runtime, Make, Bash and tar. Network is needed for initial locked setup and audits.
 
 ```bash
 make help
-make version
+make setup
+make check
 make ci-local
 ```
 
-`make check` runs Markdown, relative-link and rules-contract checks. `make test` runs the native
-Node contract suite once; `make coverage` validates its fresh LCOV report. `make build` uses npm
-pack; `make verify` checks archive members, bytes, metadata and source identity. `make release-check`
-checks the same built artifact without publishing. All five stages form `make ci-local`.
+`make check` runs Markdown, relative links/anchors, rules/lock/source checks, syntax and Node
+negative tests. `make test` measures tool coverage once; `make coverage` validates its fresh LCOV
+report. `make build` packs a local npm archive; `make verify` checks every member, byte, version
+and source identity. `make release-check` verifies that artifact without publishing.
 
-A locked tools image uses a full-commit Git dependency on baseRules for the native Node bundle
-helper. No helper copy is maintained here. Updating it requires reviewing the baseRules diff,
-updating `rules.lock.json` and the Git dependency together, then refreshing the npm lock with
-`npm install --package-lock-only --ignore-scripts` and running the full gate.
+`make ci-local` runs acceptance, coverage, build, verify, release-check and full/production dependency
+audits. It records the complete plan and exits honestly on failed stages. Documentation does not
+need Docker. The existing pinned Dockerfile and source-provenance helpers remain available for
+optional container use; they do not authorize system installs or registry publication.
 
-The first preparation needs network access. `make ci-local OFFLINE=1` requires the matching prepared
-tools image; missing inputs are blocked. Local BuildKit cache survives runs, while tests execute
-fresh. Actions API, tokens, hosted artifacts and special GitHub environment variables are not inputs.
+The full-commit baseRules dependency supplies native archive/source receipt checks; no helper
+copy is maintained here. To refresh it, review generic source diff, update `rules.lock.json`,
+its per-file identities and dependency, refresh npm lock with
+`npm install --package-lock-only --ignore-scripts`, then run native and upstream checks.
 
-Reports and the bundle stay in ignored `coverage/`: source commit/dirty state/content hash,
-commands, tools, JUnit, LCOV and checksums. Coverage below 100% warns; failed tests, build errors,
-stale/corrupt reports and changed source identity fail. No secrets or private operational data
-belong in these reports or the public policy bundle.
+Reports and bundles stay in ignored `coverage/`: commit/dirty/content identity, commands, JUnit,
+LCOV and checksums. Tool coverage below 100% is advisory; failed tests, stale/corrupt evidence,
+build or source identity changes fail. Policy prose itself has no runtime coverage claim.
 
-See [versioning](versioning.md) and [releases](releases.md).
+`npm run check:upstream` uses `gh` read access for immutable generic commit/file identity. Local
+checks validate installed bytes against the reviewed lock and dependency pin; they do not prove
+remote availability or review. Consumer tests remain the consumer owner's responsibility.

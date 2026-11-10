@@ -1,0 +1,13 @@
+{
+  "kind": "illustrative-not-runtime-configuration",
+  "serviceId": "accountsService",
+  "routingSource": "ServiceId.ACCOUNTS",
+  "audience": "accountsService",
+  "method": "POST",
+  "operation": "getMe",
+  "headerName": "x-pokerlost-serviceId",
+  "headers": { "x-pokerlost-serviceId": "accountsService" },
+  "settings": { "timeoutSeconds": 5, "dataDirectory": "${DATA_DIRECTORY}" },
+  "metricLabels": { "service": "accountsService", "operation": "getMe", "status": "200", "environment": "local" },
+  "retry": { "owner": "sdk", "attempts": 1, "idempotency": "not-established" }
+}

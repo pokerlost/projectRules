@@ -2,17 +2,41 @@ name: Documentation
 
 on:
   push:
-    branches: [main]
+    branches: [test, dev, main]
   pull_request:
+    branches: [test, dev, main]
 
 permissions:
   contents: read
 
 jobs:
   documentation:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-24.04
     timeout-minutes: 15
     steps:
       - uses: actions/checkout@11bd71901bbe5b1630ceea73d27597364c9af683 # v4.2.2
-      - uses: docker/setup-buildx-action@e468171a9de216ec08956ac3ada2f0791b6bd435 # v3.11.1
+        with:
+          ref: ${{ github.event.pull_request.head.sha || github.sha }}
+          persist-credentials: false
+      - uses: actions/setup-node@49933ea5288caeca8642d1e84afbd3f7d6820020 # v4.4.0
+        with:
+          node-version: '24.22.0'
+          cache: npm
+      - run: npm ci --ignore-scripts
       - run: make ci-local
+  promotion:
+    if: github.event_name == 'pull_request'
+    uses: pokerlost/.github/.github/workflows/promotion.yml@637ff1b505b0b9fb54847d46927a9596b1ebc967
+  release:
+    if: github.event_name == 'push' && (github.ref_name == 'dev' || github.ref_name == 'main')
+    needs: documentation
+    permissions:
+      contents: write
+      actions: read
+    uses: pokerlost/.github/.github/workflows/release.yml@637ff1b505b0b9fb54847d46927a9596b1ebc967
+    with:
+      provider-ref: 637ff1b505b0b9fb54847d46927a9596b1ebc967
+      native-adapter: npm
+      bundle-name: project-rules
+      source-workflow: .github/workflows/docs.yml
+      gate-name: documentation
