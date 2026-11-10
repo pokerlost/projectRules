@@ -77,7 +77,11 @@ reviewed transport/handshake preserving equivalent trust boundaries.
 **Applies:** component operational settings. **MUST:** validate finite positive timeouts, units,
 limits and environment selection before clients/listeners open. Public examples are synthetic;
 host-specific paths, secrets and production addresses stay private. Security allowlists remain
-reviewed, not caller configurable. **Why:** invalid settings must fail before side effects.
+reviewed, not caller configurable. Environment selection is independent of routing, audience,
+release version and Git branch. Partition token/refresh/pool/cache state by environment, origin
+and identity; use explicit HTTPS origins or not-configured remote state and loopback locally.
+Infrastructure distinguishes environment, execution contour and local/registry delivery.
+A branch change never migrates data. **Why:** invalid settings must fail before side effects.
 
 **Good:** explicit timeout seconds and environment-provided data directory; **bad:** infinite
 timeout or baked-in `/home/developer/...`. **Verify:** invalid-settings, finite/range and clean
