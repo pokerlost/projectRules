@@ -9,9 +9,11 @@ source-event SHA, native archive metadata, checksums and GitHub Release readback
 and not latest; main is stable. Permanent branches remain protected. Promotion is working → test
 → dev → main, preserving ancestry between permanent branches and required reviews/checks.
 
-The local gate verifies this bundle and its source identity. A shared `.github` release caller must
-be reviewed at an immutable full SHA before adoption. Until that producer handoff is integrated,
-release automation acceptance is BLOCKED; passing local checks or a Git tag is not a released bundle.
+The local gate verifies this bundle and its source identity. The docs workflow calls the reviewed
+[shared release provider](https://github.com/pokerlost/.github/blob/637ff1b505b0b9fb54847d46927a9596b1ebc967/docs/release_protocol.md)
+at `637ff1b505b0b9fb54847d46927a9596b1ebc967` with the native npm adapter. It validates the original
+push run and successful documentation gate before allocation; no lifecycle script runs with its
+write token. Passing local checks or a Git tag is not a released bundle.
 Do not manufacture release evidence, dispatch a different source as retry, rewrite tags or bypass
 protections. Actual producer/caller status belongs in PR and coordinator handoff, not a source journal.
 
