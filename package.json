@@ -6,22 +6,27 @@
     "node": "24.x"
   },
   "scripts": {
-    "check": "npm run check:markdown && npm run check:links",
+    "check": "npm run check:markdown && npm run check:rules",
     "check:markdown": "markdownlint \"**/*.md\" --dot --ignore node_modules --ignore coverage",
     "check:links": "find . \\( -path ./node_modules -o -path ./coverage -o -path ./.git \\) -prune -o -name \"*.md\" -type f -print0 | xargs -0 -r -n1 markdown-link-check --config .markdown-link-check.json --quiet",
     "check:rules": "node scripts/check-rules.mjs",
-    "test": "node --test --experimental-test-coverage --test-reporter=spec --test-reporter-destination=stdout --test-reporter=junit --test-reporter-destination=coverage/junit.xml --test-reporter=lcov --test-reporter-destination=coverage/lcov.info scripts/check-rules.mjs",
+    "test": "mkdir -p coverage && node --test --experimental-test-coverage --test-reporter=spec --test-reporter-destination=stdout --test-reporter=junit --test-reporter-destination=coverage/junit.xml --test-reporter=lcov --test-reporter-destination=coverage/lcov.info scripts/*.test.mjs",
     "version:show": "node node_modules/base-rules-docs/scripts/release.mjs version",
     "release:check": "node node_modules/base-rules-docs/scripts/release.mjs release-check",
     "build": "mkdir -p coverage/artifacts && npm pack --ignore-scripts --offline --pack-destination coverage/artifacts --json > coverage/pack.json && node node_modules/base-rules-docs/scripts/release.mjs capture",
     "verify": "node node_modules/base-rules-docs/scripts/release.mjs verify",
     "coverage": "node node_modules/base-rules-docs/scripts/release.mjs coverage",
-    "acceptance": "npm run check && npm test"
+    "check:upstream": "node scripts/check-upstream.mjs",
+    "check:syntax": "node scripts/check-syntax.mjs",
+    "acceptance": "npm run check && npm run check:syntax && npm test",
+    "audit:all": "npm audit --json",
+    "audit:production": "npm audit --omit=dev --json"
   },
   "devDependencies": {
     "markdown-link-check": "3.15.0",
     "markdownlint-cli": "0.49.1",
-    "base-rules-docs": "git+https://github.com/serrja/baseRules.git#bafcb63ed94b9769a0ca098e5db4b33c55dbc1b9"
+    "base-rules-docs": "git+https://github.com/serrja/baseRules.git#8434509933feaa71ba312f8d02caad7362766d5a",
+    "marked": "18.1.1"
   },
   "overrides": {
     "get-uri": {
@@ -29,13 +34,14 @@
     },
     "markdownlint-cli": {
       "smol-toml": "1.9.1",
-      "js-yaml": "5.4.1"
+      "js-yaml": "5.4.1",
+      "minimatch": "11.0.1"
     },
     "micromark-extension-math": {
       "katex": "0.18.2"
     }
   },
-  "version": "0.2.0-dev.0",
+  "version": "0.3.0-dev.0",
   "files": [
     "AGENTS.md",
     "CONTRIBUTING.md",

@@ -1,88 +1,141 @@
-# Pokerlost policy
+# 🧭 Pokerlost policy
 
-These rules specialize generic engineering policy for Pokerlost, without exposing a service
-catalog or environment topology.
+This active bundle owns Pokerlost integration rules, without a private service registry or
+deployment topology. Read the reviewed generic
+[policy](https://github.com/serrja/baseRules/blob/8434509933feaa71ba312f8d02caad7362766d5a/docs/policy.md),
+[engineering](https://github.com/serrja/baseRules/blob/8434509933feaa71ba312f8d02caad7362766d5a/docs/engineering.md),
+[naming](https://github.com/serrja/baseRules/blob/8434509933feaa71ba312f8d02caad7362766d5a/docs/naming.md),
+[frontend](https://github.com/serrja/baseRules/blob/8434509933feaa71ba312f8d02caad7362766d5a/docs/frontend.md),
+[knowledge](https://github.com/serrja/baseRules/blob/8434509933feaa71ba312f8d02caad7362766d5a/docs/knowledge.md),
+[versioning](https://github.com/serrja/baseRules/blob/8434509933feaa71ba312f8d02caad7362766d5a/docs/versioning.md) and
+[release principles](https://github.com/serrja/baseRules/blob/8434509933feaa71ba312f8d02caad7362766d5a/docs/releases.md).
+[rules.lock.json](../rules.lock.json) records their source identity.
 
-## Ownership
+## 📌 Using the catalog
 
-Python tooling flows from pythonTemplate to typerTemplate, and from pythonTemplate through
-fastApiTemplate to serviceTemplate. The generic HTTP layer owns instrumentation/lifecycle;
-the Pokerlost specialization owns service identity and POST operation conventions. Libraries
-do not require an application scaffold. Consumers update reviewed pins/provenance explicitly.
+MUST is required for the stated applicability; SHOULD permits a documented tradeoff. Exceptions
+record rule ID, owning repository, reason, compatibility impact, verification and expiry/review
+condition in the consumer PR. They cannot waive authorization, secrets protection or existing
+public contracts. Examples are illustrative and do not announce new endpoints. See
+[adoption](adoption_guide.md) for pin updates and executable example checks.
 
-The SDK owns the typed asynchronous call/response boundary and service identifier vocabulary.
-The gateway owns HTTP service selection; platformInfra owns deployment composition, environment
-upstreams, artifact compatibility and observability storage/provisioning. Nginx owns static web.
-C++20 engine owns poker rules/state/validation; Python reference demos own transport/rendering.
-Vue owns the website; Flutter/Dart own web gameplay presentation. Native delivery is deferred.
+## 🧩 PR-OWN-01 — Keep contracts with their producer
 
-## HTTP contracts
+**Applies:** behavior shared across Pokerlost components. **MUST:** keep ServiceId and Python
+transport with the SDK, routing selection with the gateway, game invariants with the engine and
+composition with infrastructure. Services own API/schema and authorization. Templates compose
+source, not runtime dependencies. The website owns navigation; the gameplay client presentation.
+**Why:** one authoritative producer prevents incompatible forks.
 
-Business operations use POST /lowerCamelCaseVerb with explicit operationId and snake_case Python
-handler names. Infrastructure routes are separate. Use `x-pokerlost-serviceId` as the canonical
-documentation spelling; HTTP field names are case-insensitive, registered values case-sensitive.
-Select fixed named upstreams from trusted configuration only, reject ambiguous/unknown input
-before backend I/O, and never return a SPA shell for an unknown service operation.
+**Good:** import the SDK routing enum; **bad:** fork its service vocabulary in a consumer.
+**Verify:** producer/consumer contract tests and review; distinguish READY, FOUNDATION and PLANNED
+capabilities. **Owner:** contract producer and affected consumer. **Exception:** a versioned
+cross-language schema or adapter, with drift tests.
 
-Routing identity is not an audience, scope or credential. Bearer credentials remain solely in
-Authorization; request JSON stays pure. Backends enforce authorization and operation validity.
-There is no generic caller-controlled headers map. Preserve 401/403/405 and meaningful headers.
-Same-origin is the default; cross-origin preflight is a separate explicit policy. Browser
-WebSocket cannot add arbitrary headers; a future realtime handshake requires its own contract.
+## 🌐 PR-HTTP-01 — Preserve operation contracts
 
-## Observability and deploy
+**Applies:** business HTTP operations. **MUST:** preserve existing POST paths, operationId, wire
+fields, errors and serialized enum values. New paths use `POST /lowerCamelCaseOperation`; Python
+handlers use snake_case. Keep health/metrics/static routes separate; preserve meaningful
+401/403/405 and headers. **Why:** an internal rename must not break clients.
 
-Use Prometheus/Grafana/Loki and a supported collector, no custom telemetry service. Keep request
-IDs validated and correlated across trusted hops as JSON data, never high-cardinality labels.
-Route templates/operations, statuses, service and environment are bounded labels; URLs, queries,
-tokens, user/table/session IDs and private cards are not labels or captured bodies.
-Use loopback for local administrative listeners, configured retention and persistent data.
-Document process-level resource collection honestly when privileged host access is not approved.
+**Good:** internal `get_me` retains an existing `/getMe`; **bad:** silently replacing its path.
+**Verify:** source OpenAPI diff plus provider/SDK tests; the
+[routing test](https://github.com/pokerlost/pypokerlost/blob/577bc2474d69c77e78ed55e517d6adaf71ab22db/tests/test_header_routing.py)
+separates operation, payload and routing. **Owner:** API producer, with SDK consumer review.
+**Exception:** explicit versioned compatible transition, never cosmetic cleanup.
 
-Validate the whole configuration before side effects. Keep secrets out of source, artifacts
-and log/cache keys. Promote tested immutable artifacts, preserve DB revisions and rollback
-artifacts, and distinguish app rollback from database rollback. Local build mode is distinct
-from registry publication. New destinations/ACL and production deploy need explicit approval.
+## 🪪 PR-ID-01 — Separate routing, audience and credentials
 
-## Code and public presentation
+**Applies:** SDK/gateway/service requests. **MUST:** use registered, case-sensitive ServiceId
+values under canonical documentation spelling `x-pokerlost-serviceId`; header names remain
+case-insensitive. An audience identifies token recipients, a scope authority, and a routing ID
+service selection. Equal strings do not make these types interchangeable. Bearer credentials
+belong only in Authorization, never JSON or routing. **Why:** routing is not authorization.
 
-The selected [frontend policy](https://github.com/serrja/baseRules/blob/bafcb63ed94b9769a0ca098e5db4b33c55dbc1b9/docs/frontend.md)
-owns TypeScript/Vue import grouping and spacing, and native Dart style. Frontend repositories
-enforce it with their locked tools. Public docs use GFM/relative links, not vault syntax.
-Portfolio screenshots come from a real demo; generated banners are presentation assets only.
-Do not invent business endpoints, deployments, benchmarks, employers or personal facts. Keep
-resume/hh.ru unchanged unless separately requested. The selected
-[knowledge policy](https://github.com/serrja/baseRules/blob/bafcb63ed94b9769a0ca098e5db4b33c55dbc1b9/docs/knowledge.md)
-owns template categories, installation and provenance.
-Coverage under 100% is advisory; tests/types/builds/access/config/report errors remain failures.
+**Good:** `ServiceId.ACCOUNTS` serializes as `accountsService`; **bad:** derive routing from an
+audience or serialize `ACCOUNTS`. **Verify:** positive/unknown-ID tests against the
+[SDK enum](https://github.com/pokerlost/pypokerlost/blob/577bc2474d69c77e78ed55e517d6adaf71ab22db/src/pypokerlost/enums/service_id.py)
+and routing test. **Owner:** SDK vocabulary, gateway selection, backend authorization.
+**Exception:** reviewed explicit typed mapping; no caller-controlled arbitrary headers map.
 
-## Delivery and version ownership
+## 🚦 PR-GATEWAY-01 — Resolve only trusted upstreams
 
-Follow the selected [version policy](https://github.com/serrja/baseRules/blob/bafcb63ed94b9769a0ca098e5db4b33c55dbc1b9/docs/versioning.md)
-and [release workflow](https://github.com/serrja/baseRules/blob/bafcb63ed94b9769a0ca098e5db4b33c55dbc1b9/docs/releases.md).
-Each package, service, chart and platform composition owns its version; HTTP schemas, generator
-manifests, bridge contracts and database revisions change only with their own compatibility needs.
-The platform composition pins concrete component versions, chart references and image digests.
-A document-template collection is a versioned bundle, not one runtime version per document.
+**Applies:** gateway boundaries. **MUST:** reject missing, unknown, duplicate or ambiguous service
+selection before backend I/O; accepted IDs select fixed named upstreams from trusted config.
+Unknown operations must not receive a SPA shell. Same-origin is the default; CORS/preflight is
+an explicit separate policy. Browser WebSocket cannot set arbitrary headers; its handshake needs
+a dedicated contract. **Why:** callers must not choose network destinations.
 
-Use `make lint` before an authorized explicit `git push origin dev`. Main remains default;
-test is a separately promoted candidate line. New work and unstable annotated snapshots stay
-in dev. `make acceptance` and `make ci-local` are manual only; no test/build/publish/deploy
-workflow is triggered by an ordinary dev push. A manual workflow existing only in dev still
-needs separate default-branch activation. Source identity, fresh tests, coverage, built artifact checksums and exit codes belong
-in the ignored report directory. Missing mandatory inputs are blocked; billing-blocked hosted
-checks retain their PR and branch. No registry, release or deployment is implied by a Git tag.
+**Good:** an enum selects an allowlisted upstream; **bad:** a request header supplies its URL.
+**Verify:** gateway rejection/no-I/O and method/status tests; browser preflight/handshake checks
+where applicable. **Owner:** gateway; infrastructure owns actual addresses. **Exception:** a
+reviewed transport/handshake preserving equivalent trust boundaries.
 
-## Environment and team process
+## ⚙️ PR-CONFIG-01 — Validate integration settings before I/O
 
-The SDK's typed Environment selects main/dev/test/local independently of service routing,
-audience/scopes, release version and Git branch. Remote endpoints are explicitly configured
-HTTPS origins or not_configured; local uses explicit loopback. Token/refresh/pool/cache state
-is partitioned by environment, origin and identity. Infra separates environment from execution
-(host/CI/remote) and artifact delivery (local/registry). No branch change migrates data.
+**Applies:** component operational settings. **MUST:** validate finite positive timeouts, units,
+limits and environment selection before clients/listeners open. Public examples are synthetic;
+host-specific paths, secrets and production addresses stay private. Security allowlists remain
+reviewed, not caller configurable. Environment selection is independent of routing, audience,
+release version and Git branch. Partition token/refresh/pool/cache state by environment, origin
+and identity; use explicit HTTPS origins or not-configured remote state and loopback locally.
+Infrastructure distinguishes environment, execution contour and local/registry delivery.
+A branch change never migrates data. **Why:** invalid settings must fail before side effects.
 
-Issues belong to their existing repositories; cross-service goals belong to the private overview.
-One private organization Project owns the shared plan, and Git docs own the handbook/ADRs.
-Keep personal vault data out of GitHub. A dev push records implemented_in_dev, full SHA,
-lint_passed and tests_not_run_by_policy; it does not auto-close the issue or mark Done. Board
-access and repo access are separate; changing either requires its own explicit authorization.
+**Good:** explicit timeout seconds and environment-provided data directory; **bad:** infinite
+timeout or baked-in `/home/developer/...`. **Verify:** invalid-settings, finite/range and clean
+local-run tests. Bundled example checks do not inspect all consumers. **Owner:** component config
+owner. **Exception:** declared platform adapter with capability checks and a tested fallback.
+
+## 🔄 PR-RETRY-01 — Assign one bounded retry owner
+
+**Applies:** SDK/service/realtime calls. **MUST:** define deadline/cancellation ownership, bounded
+attempts and idempotency before retrying side effects. Avoid independent retry layers in client,
+SDK and gateway. Preserve error envelopes and Retry-After. **Why:** transport failure does not
+prove that a business command failed.
+
+**Good:** opt in for proven idempotency within one total budget; **bad:** replay a debit after
+timeout without deduplication. **Verify:** cancellation, exhausted budget, transient/permanent
+errors and duplicate-effect tests. The
+[SDK retry tests](https://github.com/pokerlost/pypokerlost/blob/577bc2474d69c77e78ed55e517d6adaf71ab22db/tests/test_retry.py)
+describe the current fixed policy, not configurable retry settings. **Owner:** producer idempotency,
+SDK transport retry. **Exception:** producer deduplication contract and replay tests; no unbounded retry.
+
+## 📊 PR-OBS-01 — Keep telemetry bounded and public-safe
+
+**Applies:** metrics, traces and structured logs. **MUST:** validate correlation IDs across trusted
+hops; metric dimensions are bounded service/environment/operation template/status. Never label
+metrics with user/table/session/request IDs, raw URLs, queries or private cards. Exclude credentials
+and sensitive bodies. Use supported collectors/storage, not a custom telemetry service.
+**Why:** cardinality and confidentiality constrain the whole system.
+
+**Good:** `operation=getMe,status=200`; **bad:** `session_id=...` in a metric. **Verify:** bundled
+label allowlist plus consumer redaction/cardinality tests and review. Infrastructure verifies
+retention, persistence and listeners. **Owner:** component emits; infrastructure provisions.
+**Exception:** validated IDs in access-controlled logs/traces with retention, never metric labels.
+
+## 🔒 PR-TRUST-01 — Preserve artifact and migration boundaries
+
+**Applies:** integration/deployment. **MUST:** consume reviewed immutable versions, image digests
+or full source pins; preserve applied DB revisions and rollback artifacts. Distinguish app rollback
+from DB rollback and local build from registry publishing. Administrative listeners SHOULD bind
+loopback locally. **Why:** a tested tree does not prove deployment or database downgrade support.
+
+**Good:** composition pins a tested digest and migration compatibility; **bad:** mutable `latest`
+with an untested rollback promise. **Verify:** manifest/digest, migration tests and deployment
+profile. **Owner:** producer version, infrastructure composition, service migrations.
+**Exception:** explicit local source-build profile; no implied registry/deploy/new ACL permission.
+
+## 📦 PR-ADOPT-01 — Review the complete policy pin chain
+
+**Applies:** Pokerlost policy consumers. **MUST:** adopt projectRules at a full immutable commit;
+review its baseRules lock, changed rules and local overrides together. Retain historical links.
+Components own native checks; organization workflows own mechanics. Follow working → test → dev
+→ main and exact-event releases from the linked generic policy. **Why:** a URL is a reviewed
+source, not an automatic loader or permission grant.
+
+**Good:** update AGENTS/template pin and affected tests; **bad:** fetch `main` at startup or call
+an unpublished SHA released. **Verify:** lock/link/examples here, native tests and release readback
+at each consumer. **Owner:** policy producer and consumer's own coordinator. **Exception:** an
+intentionally historical immutable reference with declared applicability. This repository stays ACTIVE.
