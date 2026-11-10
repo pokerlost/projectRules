@@ -1,13 +1,15 @@
-# Versioning
+# 📦 Versioning
 
-`package.json` owns this bundle's version; npm maintains the matching lock metadata. The initial
-`0.1.0` identifies this policy collection independently from baseRules, applications and charts.
-The reviewed baseRules full commit and native helper dependency are inputs, not this bundle's version.
+`package.json` owns this policy bundle's native SemVer intent; npm lock metadata must match.
+baseRules pin, HTTP schemas, bridge contracts and database revisions have independent versions.
+The [generic version policy](https://github.com/serrja/baseRules/blob/8434509933feaa71ba312f8d02caad7362766d5a/docs/versioning.md)
+governs compatibility. Rule IDs remain stable; tightening requirements needs consumer impact review.
 
-Follow the selected [compatibility and 0.x policy](https://github.com/serrja/baseRules/blob/5d01b515b5bac8457606fe37da738ee1e96368ba/docs/versioning.md).
-Use native SemVer, including explicit prereleases such as `0.2.0-dev.0`. Change the metadata with
-`npm version <version> --no-git-tag-version --ignore-scripts`, document compatibility in the changelog,
-and check with `make version` and `make release-check`. Existing historical pins remain valid.
+GitHub tags use `vX.Y.Z-dev.N` for dev and `vX.Y.Z` for main. Native npm bundle metadata uses
+`X.Y.Z-dev.N` / `X.Y.Z`; the release adapter must inject that exact value into an isolated export,
+including npm lock, before pack/verification. Do not commit release-generated metadata into branches.
+Never rename a prerelease archive into a stable archive. The resolver considers existing tags and
+reviewed version intent, and reuses an existing allocation on event rerun. See [releases](releases.md).
 
-Use an annotated `v<version>` for the single bundle after clean checked main integration. There
-are no independent runtime versions for individual policy pages. See [releases](releases.md).
+Use `npm version VERSION --no-git-tag-version --ignore-scripts` only for reviewed source intent.
+`make version` checks native metadata; `make ci-local` checks the archive. No npm publish is configured.

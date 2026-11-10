@@ -2,7 +2,50 @@
   "schemaVersion": 1,
   "baseRules": {
     "repository": "https://github.com/serrja/baseRules",
-    "commit": "5d01b515b5bac8457606fe37da738ee1e96368ba",
-    "entrypoint": "AGENTS.md"
+    "commit": "8434509933feaa71ba312f8d02caad7362766d5a",
+    "entrypoint": "AGENTS.md",
+    "files": {
+      "AGENTS.md": {
+        "blobSha": "23b9fbeabc234439a9eb3cfd0c6a3b7828017a82",
+        "sha256": "d30087a9b2a72ee0f4a5ebd46d49dc810cb85bc3f464d386a08a91b6af20fed8"
+      },
+      "LICENSE": {
+        "blobSha": "4f760f5a8acd3fe4e990813f57a436bf5701285e",
+        "sha256": "e7813a4e8912aca452d2166e5a1ef6b78fcb6d0855e309cf5a0c35591284c8b2"
+      },
+      "docs/policy.md": {
+        "blobSha": "25f18233d5b3fdedf6b2f62e71f920b989da6fa7",
+        "sha256": "df8153b55f06fb480c0079f899201b8ac8c0853f8b8d9d81ed9cf434dd66710a"
+      },
+      "docs/engineering.md": {
+        "blobSha": "463204ccf6752ef27020ffb49594738b25c3f1cc",
+        "sha256": "f90f5476d874f68c976203fb201e13fe7399185c78ee9df87b483c1d4491f441"
+      },
+      "docs/naming.md": {
+        "blobSha": "7a9d52729c1143651df3232b871c5d509f9e6869",
+        "sha256": "5cdee7124c52cfa46066f475465f5c140b85e2e1eac0bc6f0aac5e693d857a56"
+      },
+      "docs/frontend.md": {
+        "blobSha": "e9102c021416d409ed9eba122b07f7739b3bef46",
+        "sha256": "d95878c1241125162538a4c81b248a8ab0fbc41cc7e17c0a26840d376bf18cc8"
+      },
+      "docs/knowledge.md": {
+        "blobSha": "19db0c9ce97320342f5fcf60233cf69f0e92dac8",
+        "sha256": "4b90cfb5f7bf38e307f2cad01963bcad408802fd77c22e80fe1a9a9d969ef227"
+      },
+      "docs/versioning.md": {
+        "blobSha": "083d4e559f18858ce5cb87ac92ef028590303b44",
+        "sha256": "e670e29463ccf5c70a504ef0ad08709d23a684fa89cd6e81825493c90a523505"
+      },
+      "docs/releases.md": {
+        "blobSha": "155c86ac10817f60b55ab19030c9bceea1040c0d",
+        "sha256": "bedd560f580f053caaef9598e6aa720ab85154be364d456d5fcff65c9e8daa85"
+      }
+    }
+  },
+  "projectPolicy": {
+    "path": "docs/project.md",
+    "blobSha": "a05c30e586566a52571c797a6bec0b12fc31aca3",
+    "sha256": "2dc2984aa1f1b526cd32db52153112179b9ae20e0347f726f4486834ca89cac0"
   }
 }
